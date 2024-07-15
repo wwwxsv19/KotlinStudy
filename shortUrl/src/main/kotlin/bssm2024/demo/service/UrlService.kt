@@ -1,34 +1,29 @@
 package bssm2024.demo.service
 
-import bssm2024.demo.dto.CreateUrlRes
-import bssm2024.demo.model.ShortenUrl
+import bssm2024.demo.model.Url
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
 @Service
 class UrlService(
-    val shortUrlRepository: ShortUrlRepository,
-    val base: String = "http://localhost:8082/short-url/"
+    val urlRepository: UrlRepository,
+    val base: String = "http://localhost:8082/api/short-url/"
 ) {
-    fun create(originalUrl: String): CreateUrlRes {
-        val encodedUrl = originalUrl.hashCode().toString(radix = 26)
-
-        val url: ShortenUrl = shortUrlRepository.save(
-            ShortenUrl(
-                originalUrl = originalUrl,
-                encodedUrl = base + encodedUrl
-            )
-        )
-
-        return CreateUrlRes(
-            original_url = url.originalUrl,
-            encoded_url = url.encodedUrl
-        )
+    fun save(url: Url): Url {
+        return urlRepository.save(url)
     }
 
-    fun readAll(): List<ShortenUrl>
-        = shortUrlRepository.findAll()
+    fun create(originalUrl: String): String {
+        return "http://localhost:8082/short-url/" + originalUrl.hashCode().toString(radix = 26)
+    }
 
-    fun redirect(encoded: String): ShortenUrl?
-        = shortUrlRepository.findByEncodedUrl(base + encoded).getOrNull()
+    fun readAll(): List<Url>
+        = urlRepository.findAll()
+
+    fun redirect(encoded: String): Url {
+        val url = urlRepository.findByEncodedUrl(base + encoded)
+        url.clickCount ++
+        urlRepository.save(url)
+        return url
+    }
 }
