@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>MQTT BSSM wxsv19</title>
+</head>
+<body>
+<h2>안녕하세용</h2>
+<p>위 사이트는 2024 BSSM 1학기 여름 AI 캠프 스프링 부트 코틀린 mqtt 어쩌구 테스트용입니다.</p>
+<form id = "frm">
+    <label for="message">전송할 메시지</label>
+    <br>
+    <textarea id="message" name="message" rows="10" cols="50"></textarea>
+    <br><br>
+    <button type="submit">전송</button>
+</form>
+<script>
+    document.getElementById("frm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const message = document.getElementById("message").value;
+
+        const payload = JSON.stringify({ message : message });
+
+        fetch('http://localhost:8080/mqtt/ping', {
+            method : "POST",
+            headers : {
+                "Content-type" : "application/json",
+            },
+            body : payload
+        })
+    })
+
+</script>
+</body>
+</html>
