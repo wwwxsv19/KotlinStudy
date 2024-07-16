@@ -1,7 +1,7 @@
 package bssm2024.demo.model
 
 import jakarta.persistence.*
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 
 @Entity
 @Table(name = "short_url")
@@ -14,5 +14,7 @@ data class Url (
 
     var encodedUrl: String,
 
-    var clickCount: Long
+    var clickCount: Long,
+
+    val createdAt: LocalDateTime = LocalDateTime.now()
 )

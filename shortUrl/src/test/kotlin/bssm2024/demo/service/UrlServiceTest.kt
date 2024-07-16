@@ -86,7 +86,7 @@ class UrlServiceTest(
         val original = "https://naver.com"
         val result = sut.create(original)
 
-        assertEquals(original.hashCode().toString(radix = 26), result)
+        assertEquals("http://localhost:8082/api/short-url/" + original.hashCode().toString(radix = 26), result)
     }
 
     @Test
